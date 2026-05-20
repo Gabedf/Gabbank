@@ -6,4 +6,7 @@ import GabBank.model.UserAccount;
 
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {
 
+    // CPFs
+    boolean existsByCpf(String cpf);
+    
 }

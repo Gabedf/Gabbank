@@ -3,7 +3,8 @@ package GabBank.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import GabBank.dto.CreateUserRequest;
+import GabBank.dto.CreateUserRequestDTO;
+import GabBank.exception.custom.CpfAlreadyExistsException;
 import GabBank.model.UserAccount;
 import GabBank.repository.UserAccountRepository;
 
@@ -19,15 +20,18 @@ public class UserAccountService {
     }
 
     // CREATE USER
-    public UserAccount createUser(CreateUserRequest request) {
+    public UserAccount createUser(CreateUserRequestDTO request) {
         UserAccount userAccount = new UserAccount();
         String encryptedPwd     = passwordEncoder.encode(request.getPassword()); 
+        
+        if (userAccountRepository.existsByCpf(request.getCpf())) {
+            throw new CpfAlreadyExistsException();
+        }
 
         userAccount.setCpf(request.getCpf());
         userAccount.setEmail(request.getEmail());
         userAccount.setPassword(encryptedPwd); 
 
-        return  userAccountRepository.save(userAccount);
+        return userAccountRepository.save(userAccount);
     }
-
 }
