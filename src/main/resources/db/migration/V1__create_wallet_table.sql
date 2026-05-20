@@ -1,0 +1,4 @@
+CREATE TABLE wallet (
+    id BIGSERIAL PRIMARY KEY,
+    balance NUMERIC(19,2) NOT NULL
+);
