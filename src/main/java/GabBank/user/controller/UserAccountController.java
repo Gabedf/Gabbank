@@ -6,27 +6,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import GabBank.user.dto.CreateUserRequestDTO;
 import GabBank.user.dto.CreateUserResponseDTO;
+import GabBank.user.mapper.UserAccountMapper;
 import GabBank.user.model.UserAccount;
 import GabBank.user.service.UserAccountService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import jakarta.validation.Valid;
 
 @RequestMapping("/users")
 @RestController
 public class UserAccountController {
     private final UserAccountService userAccountService;
-    public UserAccountController(UserAccountService userAccountService) {
+    private final UserAccountMapper userAccountMapper;
+    public UserAccountController(UserAccountService userAccountService, UserAccountMapper userAccountMapper) {
         this.userAccountService = userAccountService;
+        this.userAccountMapper  = userAccountMapper;
     }
 
     @PostMapping
-    public CreateUserResponseDTO createUser(@RequestBody CreateUserRequestDTO request) {
+    public CreateUserResponseDTO createUser(@Valid @RequestBody CreateUserRequestDTO request) {
         UserAccount user                      = userAccountService.createUser(request);
-
-        CreateUserResponseDTO userResponseDTO = new CreateUserResponseDTO();
-        userResponseDTO.setCpf(user.getCpf());
-        userResponseDTO.setEmail(user.getEmail());
-        userResponseDTO.setId(user.getId());
-
-        return userResponseDTO;
+        return userAccountMapper.toResponseDTO(user);
     }
 }
