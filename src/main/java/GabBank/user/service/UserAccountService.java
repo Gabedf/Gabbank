@@ -4,6 +4,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import GabBank.user.dto.CreateUserRequestDTO;
+import GabBank.user.enums.UserStatus;
+import GabBank.user.mapper.UserAccountMapper;
 import GabBank.exception.custom.CpfAlreadyExistsException;
 import GabBank.user.model.UserAccount;
 import GabBank.user.repository.UserAccountRepository;
@@ -13,24 +15,27 @@ public class UserAccountService {
 
     private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public UserAccountService(UserAccountRepository userAccountRepository, PasswordEncoder passwordEncoder) {
+    private final UserAccountMapper userAccountMapper;
+    
+    public UserAccountService(
+        UserAccountRepository userAccountRepository, 
+        PasswordEncoder passwordEncoder,
+        UserAccountMapper userAccountMapper) {
         this.userAccountRepository = userAccountRepository;
         this.passwordEncoder       = passwordEncoder;
+        this.userAccountMapper     = userAccountMapper;
     }
 
     // CREATE USER
     public UserAccount createUser(CreateUserRequestDTO request) {
-        UserAccount userAccount = new UserAccount();
         String encryptedPwd     = passwordEncoder.encode(request.getPassword()); 
         
         if (userAccountRepository.existsByCpf(request.getCpf())) {
             throw new CpfAlreadyExistsException();
         }
-
-        userAccount.setCpf(request.getCpf());
-        userAccount.setEmail(request.getEmail());
+        UserAccount userAccount = userAccountMapper.requestToUser(request);
         userAccount.setPassword(encryptedPwd); 
+        userAccount.setUserStatus(UserStatus.ACTIVE);
 
         return userAccountRepository.save(userAccount);
     }
