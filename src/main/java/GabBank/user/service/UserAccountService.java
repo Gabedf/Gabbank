@@ -1,12 +1,12 @@
-package GabBank.service;
+package GabBank.user.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import GabBank.dto.CreateUserRequestDTO;
+import GabBank.user.dto.CreateUserRequestDTO;
 import GabBank.exception.custom.CpfAlreadyExistsException;
-import GabBank.model.UserAccount;
-import GabBank.repository.UserAccountRepository;
+import GabBank.user.model.UserAccount;
+import GabBank.user.repository.UserAccountRepository;
 
 @Service
 public class UserAccountService {

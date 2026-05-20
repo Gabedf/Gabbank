@@ -1,4 +1,4 @@
-package GabBank.model;
+package GabBank.user.model;
 
 import java.math.BigDecimal;
 

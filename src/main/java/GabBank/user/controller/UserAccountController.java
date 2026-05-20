@@ -1,13 +1,13 @@
-package GabBank.controller;
+package GabBank.user.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import GabBank.dto.CreateUserRequestDTO;
-import GabBank.dto.CreateUserResponseDTO;
-import GabBank.model.UserAccount;
-import GabBank.service.UserAccountService;
+import GabBank.user.dto.CreateUserRequestDTO;
+import GabBank.user.dto.CreateUserResponseDTO;
+import GabBank.user.model.UserAccount;
+import GabBank.user.service.UserAccountService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RequestMapping("/users")

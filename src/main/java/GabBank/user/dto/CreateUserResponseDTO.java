@@ -1,12 +1,12 @@
-package GabBank.dto;
+package GabBank.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateUserRequestDTO {
+public class CreateUserResponseDTO {
+    private Long id;
     private String cpf;
     private String email;
-    private String password;
 }

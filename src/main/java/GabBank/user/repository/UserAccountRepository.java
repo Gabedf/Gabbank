@@ -1,8 +1,8 @@
-package GabBank.repository;
+package GabBank.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import GabBank.model.UserAccount;
+import GabBank.user.model.UserAccount;
 
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {
 

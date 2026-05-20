@@ -1,7 +1,7 @@
-package GabBank.model;
+package GabBank.user.model;
 
-import GabBank.enums.StatusUser;
-import GabBank.enums.UserRole;
+import GabBank.user.enums.StatusUser;
+import GabBank.user.enums.UserRole;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
