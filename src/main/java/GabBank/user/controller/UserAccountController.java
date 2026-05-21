@@ -45,4 +45,10 @@ public class UserAccountController {
         .toList();
     }
 
+    // REMOVE
+    @DeleteMapping("remove/{id}")
+    public UserResponseDTO removeUserById(@PathVariable("id") Long id) {
+        return userAccountMapper.toResponseDTO(userAccountService.removeUserById(id));
+    }
+    
 }

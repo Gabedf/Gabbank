@@ -1,12 +1,15 @@
 package GabBank.user.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import GabBank.user.dto.CreateUserRequestDTO;
-import GabBank.user.enums.UserStatus;
+import GabBank.user.enums.StatusUser;
 import GabBank.user.mapper.UserAccountMapper;
 import GabBank.exception.custom.CpfAlreadyExistsException;
+import GabBank.exception.custom.UserDoesNotExistException;
 import GabBank.user.model.UserAccount;
 import GabBank.user.repository.UserAccountRepository;
 
@@ -33,9 +36,10 @@ public class UserAccountService {
         if (userAccountRepository.existsByCpf(request.getCpf())) {
             throw new CpfAlreadyExistsException();
         }
+        
         UserAccount userAccount = userAccountMapper.requestToUser(request);
         userAccount.setPassword(encryptedPwd); 
-        userAccount.setUserStatus(UserStatus.ACTIVE);
+        userAccount.setStatusUser(StatusUser.ACTIVE);
 
         return userAccountRepository.save(userAccount);
     }
@@ -47,5 +51,12 @@ public class UserAccountService {
     }
     public List<UserAccount> findAll() {
         return userAccountRepository.findAll();
+    }
+
+    // REMOVE
+    public UserAccount removeUserById(Long id) {
+        UserAccount user = userAccountRepository.findById(id).orElseThrow(UserDoesNotExistException::new);
+        userAccountRepository.deleteById(id);
+        return user;
     }
 }
