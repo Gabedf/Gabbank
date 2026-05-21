@@ -1,4 +1,4 @@
-package GabBank.enums;
+package GabBank.user.enums;
 
 public enum UserRole {
     USER,
