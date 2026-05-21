@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import GabBank.user.dto.CreateUserRequestDTO;
+import GabBank.user.dto.UpdateRequestEmailDTO;
 import GabBank.user.dto.UserResponseDTO;
 import GabBank.user.mapper.UserAccountMapper;
 import GabBank.user.service.UserAccountService;
@@ -51,4 +53,9 @@ public class UserAccountController {
         return userAccountMapper.toResponseDTO(userAccountService.removeUserById(id));
     }
     
+    // UPDATE
+    @PutMapping("update/{id}/email")
+    public UserResponseDTO updateEmail(@PathVariable("id") Long id, @Valid @RequestBody UpdateRequestEmailDTO request) {
+        return userAccountMapper.toResponseDTO(userAccountService.updateUserEmail(id, request));
+    }
 }

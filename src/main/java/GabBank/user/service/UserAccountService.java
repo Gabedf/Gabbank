@@ -6,10 +6,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import GabBank.user.dto.CreateUserRequestDTO;
+import GabBank.user.dto.UpdateRequestEmailDTO;
 import GabBank.user.enums.StatusUser;
+import GabBank.user.exception.custom.CpfAlreadyExistsException;
+import GabBank.user.exception.custom.EmailAlreadyExistsException;
+import GabBank.user.exception.custom.InvalidPasswordException;
+import GabBank.user.exception.custom.UserDoesNotExistException;
 import GabBank.user.mapper.UserAccountMapper;
-import GabBank.exception.custom.CpfAlreadyExistsException;
-import GabBank.exception.custom.UserDoesNotExistException;
 import GabBank.user.model.UserAccount;
 import GabBank.user.repository.UserAccountRepository;
 
@@ -31,9 +34,9 @@ public class UserAccountService {
 
     // CREATE USER
     public UserAccount createUser(CreateUserRequestDTO request) {
-        String encryptedPwd     = passwordEncoder.encode(request.getPassword()); 
+        String encryptedPwd     = passwordEncoder.encode(request.password()); 
         
-        if (userAccountRepository.existsByCpf(request.getCpf())) {
+        if (userAccountRepository.existsByCpf(request.cpf())) {
             throw new CpfAlreadyExistsException();
         }
         
@@ -58,5 +61,29 @@ public class UserAccountService {
         UserAccount user = userAccountRepository.findById(id).orElseThrow(UserDoesNotExistException::new);
         userAccountRepository.deleteById(id);
         return user;
+    }
+
+    // UPDATE
+    public UserAccount updateUserEmail(Long id, UpdateRequestEmailDTO request) {
+        UserAccount user    = userAccountRepository.findById(id).orElseThrow(UserDoesNotExistException::new);
+        Boolean emailVerify = userAccountRepository.existsByEmail(request.email());
+        
+        if (emailVerify) {
+            throw new EmailAlreadyExistsException();
+        }
+        user.setEmail(request.email());
+        return userAccountRepository.save(user);
+    }
+
+    public UserAccount updateUserPwd(Long id, String currentPwd, String newPwd) {
+        UserAccount user  = userAccountRepository.findById(id).orElseThrow(UserDoesNotExistException::new);
+        Boolean pwdVerify = passwordEncoder.matches(currentPwd, newPwd);
+        if (!pwdVerify) {
+            throw new InvalidPasswordException();
+        }
+
+        String encodedPwd = passwordEncoder.encode(newPwd);
+        user.setPassword(encodedPwd);
+        return userAccountRepository.save(user);
     }
 }
