@@ -8,5 +8,7 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Long> 
 
     // CPFs
     boolean existsByCpf(String cpf);
-    
+ 
+    // EMAILs
+    boolean existsByEmail(String email);
 }
