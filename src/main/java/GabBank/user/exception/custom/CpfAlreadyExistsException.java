@@ -1,4 +1,4 @@
-package GabBank.exception.custom;
+package GabBank.user.exception.custom;
 
 public class CpfAlreadyExistsException extends RuntimeException {
 
