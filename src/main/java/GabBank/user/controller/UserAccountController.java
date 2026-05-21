@@ -27,8 +27,22 @@ public class UserAccountController {
     }
 
     @PostMapping
-    public CreateUserResponseDTO createUser(@Valid @RequestBody CreateUserRequestDTO request) {
-        UserAccount user                      = userAccountService.createUser(request);
-        return userAccountMapper.toResponseDTO(user);
+    public UserResponseDTO createUser(@Valid @RequestBody CreateUserRequestDTO request) {
+        return userAccountMapper.toResponseDTO(userAccountService.createUser(request));
     }
+
+    // GET    
+    @GetMapping("/view/{id}")
+    public UserResponseDTO findyUserById(@PathVariable("id") Long id) {
+        return userAccountMapper.toResponseDTO(userAccountService.findUserById(id));
+    }
+
+    @GetMapping("/view/all")
+    public List<UserResponseDTO> findUsers() {
+        return userAccountService.findAll()
+        .stream()
+        .map(userAccountMapper::toResponseDTO)
+        .toList();
+    }
+
 }

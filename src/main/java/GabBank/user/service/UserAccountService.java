@@ -39,4 +39,13 @@ public class UserAccountService {
 
         return userAccountRepository.save(userAccount);
     }
+
+    // FIND USER
+    public UserAccount findUserById(Long id) {
+        return userAccountRepository.findById(id)
+        .orElseThrow(UserDoesNotExistException::new);
+    }
+    public List<UserAccount> findAll() {
+        return userAccountRepository.findAll();
+    }
 }
